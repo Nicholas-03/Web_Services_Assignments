@@ -1,0 +1,1 @@
+Nel report scrivere che quando si aggiunge un nuovo url uguale a uno già esistente, questo viene inserito nel dizionario "urls" con nuovo ID. Questa è una scelta: Real URL shorteners like bit.ly create new IDs for each request (users want unique tracking)
