@@ -1,1 +1,57 @@
-Nel report scrivere che quando si aggiunge un nuovo url uguale a uno già esistente, questo viene inserito nel dizionario "urls" con nuovo ID. Questa è una scelta: Real URL shorteners like bit.ly create new IDs for each request (users want unique tracking)
+# URL Shortener REST Service
+## Setup & Installation
+
+Follow these steps from the project root directory:
+
+1. **Create a virtual environment:**
+    ```bash
+    python -m venv venv
+    ```
+
+2. **Activate the environment:**
+    ```bash
+    # Mac/Linux
+    source venv/bin/activate
+    
+    # Windows
+    .\venv\Scripts\activate
+    ```
+
+3. **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+## Running the Application
+### Termial 1
+1. **Activate enviornment**
+    ```bash
+    # Mac/Linux
+    source venv/bin/activate
+    
+    # Windows
+    .\venv\Scripts\activate
+    ```
+2. **Start flask server**
+    ```bash
+    flask --app src/app.py run --debug
+    ```
+
+### Termial 2
+1. **Activate enviornment**
+    ```bash
+    # Mac/Linux
+    source venv/bin/activate
+    
+    # Windows
+    .\venv\Scripts\activate
+    ```
+2. **Run tests**
+    ```bash
+    (cd test && python3 -s test_1_marking_mk2.py)
+    ```
+
+### Testing with postman
+1. Open postman
+2. Import the collection from ``postman/collection.json``
+3. Run the HTML requests
