@@ -1,6 +1,6 @@
 from url import Url
 from utils import is_valid_url
-from flask import Flask, request, jsonify, redirect
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
