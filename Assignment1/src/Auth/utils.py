@@ -11,14 +11,14 @@ def createToken(username):
         "alg": "HS256"
     }
     headerJson = json.dumps(header, separators=(',', ':')) # removes white spaces
-    encodedHeader = base64.urlsafe_b64encode(headerJson.encode('utf-8')).decode('utf-8').rstrip('=')
+    encodedHeader = base64.b64encode(headerJson.encode('utf-8')).decode('utf-8')
 
     payload = {
         "username": username,
-        "exp": int(time.time()) + 3600 # in seconds
+        "exp": int(time.time()) + 10 # in seconds
     }
     payloadJson = json.dumps(payload, separators=(',', ':')) # removes white spaces
-    encodedPayload = base64.urlsafe_b64encode(payloadJson.encode('utf-8')).decode('utf-8').rstrip('=')
+    encodedPayload = base64.b64encode(payloadJson.encode('utf-8')).decode('utf-8')
 
     message = f"{encodedHeader}.{encodedPayload}"
     
@@ -27,7 +27,7 @@ def createToken(username):
         message.encode('utf-8'),
         hashlib.sha256
     ).digest()
-    encodedSignature = base64.urlsafe_b64encode(signature).decode('utf-8').rstrip('=')
+    encodedSignature = base64.b64encode(signature).decode('utf-8')
     
     return f"{encodedHeader}.{encodedPayload}.{encodedSignature}"
 
@@ -47,14 +47,14 @@ def validateToken(token):
             message.encode('utf-8'),
             hashlib.sha256
         ).digest()
-        expectedSignature_b64 = base64.urlsafe_b64encode(expectedSignature).decode('utf-8').rstrip('=')
+        expectedSignature_b64 = base64.b64encode(expectedSignature).decode('utf-8')
         
         # Compare signatures
         if encodedSignature != expectedSignature_b64:
             return None
         
         # Decode and parse the payload
-        payloadJson = base64.urlsafe_b64decode(encodedPayload + '===').decode('utf-8')
+        payloadJson = base64.b64decode(encodedPayload).decode('utf-8')
         payload = json.loads(payloadJson)
         
         # Check if token is expired
