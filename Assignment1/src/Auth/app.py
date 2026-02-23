@@ -1,13 +1,13 @@
 from users import User
+import os
 from utils import createToken, validateToken
-
 from flask import Flask, request, jsonify
-
-import sys
-sys.path.append('..')
 from config import AUTH_SERVICE_PORT
 
-app = Flask(__name__)
+INSTANCE_PATH = os.environ.get("INSTANCE_PATH", "/data/instance")
+BIND_HOST = os.environ.get("BIND_HOST", "0.0.0.0")
+
+app = Flask(__name__, instance_path=INSTANCE_PATH)
 
 @app.post("/users")
 def createUser():
@@ -61,4 +61,4 @@ def validate():
 User.loadData(app)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=AUTH_SERVICE_PORT)
+    app.run(host=BIND_HOST, port=AUTH_SERVICE_PORT)

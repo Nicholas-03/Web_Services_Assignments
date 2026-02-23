@@ -27,10 +27,8 @@ class User:
         
         try:
             with open(path, "r", encoding="utf-8") as f:
-                print("DB loaded successfully")
                 cls.users = json.load(f)
                 
         except FileNotFoundError:
             with open(path, "w", encoding="utf-8") as f:
                 json.dump({}, f)
-                print("DB created successfully")

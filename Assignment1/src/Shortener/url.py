@@ -2,12 +2,15 @@ import json, os
 
 class Url:
     urls = {}
-    counter = None
+    counter = 0
     app = None
 
     @staticmethod
     def getId(num):
         chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        if num is None:
+            num = 0
+        
         if num == 0:
             return chars[0]
     
@@ -65,12 +68,11 @@ class Url:
         
         try:
             with open(path, "r", encoding="utf-8") as f:
-                print("DB loaded successfully")
                 database = json.load(f)
                 cls.urls = database.get("urls", {})
-                cls.counter = database.get("counter", 0)
+                c = database.get("counter", 0)
+                cls.counter = c if isinstance(c, int) else 0
                 
         except FileNotFoundError:
             with open(path, "w", encoding="utf-8") as f:
-                json.dump({}, f)
-                print("DB created successfully")
+                json.dump({"counter": 0, "urls": {}}, f)

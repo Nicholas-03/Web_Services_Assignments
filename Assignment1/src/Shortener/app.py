@@ -1,11 +1,13 @@
 from url import Url
+import os
 from utils import *
 from flask import Flask, request, jsonify
-import sys
-sys.path.append('..')
 from config import URL_SHORTENER_PORT
 
-app = Flask(__name__)
+INSTANCE_PATH = os.environ.get("INSTANCE_PATH", "/data/instance")
+BIND_HOST = os.environ.get("BIND_HOST", "0.0.0.0")
+
+app = Flask(__name__, instance_path=INSTANCE_PATH)
 
 # GET / - Returns a list of all existing keys
 @app.get("/")
@@ -109,4 +111,4 @@ def deleteNull():
 Url.loadData(app)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=URL_SHORTENER_PORT)
+    app.run(host=BIND_HOST, port=URL_SHORTENER_PORT)

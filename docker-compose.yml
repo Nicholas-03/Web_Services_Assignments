@@ -1,0 +1,25 @@
+services:
+  auth:
+    build: ./Assignment1/src/Auth
+    ports:
+      - "5001:5001"
+    volumes:
+      - auth-instance:/data/instance
+    environment:
+      - INSTANCE_PATH=/data/instance
+
+  shortener:
+    build: ./Assignment1/src/Shortener
+    ports:
+      - "5000:5000"
+    volumes:
+      - shortener-instance:/data/instance
+    environment:
+      - INSTANCE_PATH=/data/instance
+      - AUTH_BASE_URL=http://auth:5001
+    depends_on:
+      - auth
+
+volumes:
+  auth-instance:
+  shortener-instance:

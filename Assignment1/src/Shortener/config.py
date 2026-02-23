@@ -1,4 +1,4 @@
 # config.py
-BASE_URL = "http://127.0.0.1"
+BASE_URL = "0.0.0.0"
 URL_SHORTENER_PORT = 5000
 AUTH_SERVICE_PORT = 5001
