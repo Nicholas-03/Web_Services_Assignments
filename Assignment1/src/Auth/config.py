@@ -1,0 +1,3 @@
+# config.py
+BASE_URL = "0.0.0.0"
+AUTH_SERVICE_PORT = 5001

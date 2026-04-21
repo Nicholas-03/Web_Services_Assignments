@@ -1,8 +1,9 @@
 import re
 import requests
-import sys
-sys.path.append('..')
+import os
 from config import BASE_URL, AUTH_SERVICE_PORT
+
+AUTH_BASE_URL = os.environ.get("AUTH_BASE_URL", "http://127.0.0.1:5001")
 
 def is_valid_url(url):
     if not url:
@@ -20,14 +21,16 @@ def is_valid_url(url):
     )
     return bool(url_pattern.match(url))
 
-def validateToken(token):
+def validateToken(token_header):
+    if not token_header: return None
+    token = token_header.split(" ")[1] if " " in token_header else token_header
+    
     response = requests.post(
-        f'{BASE_URL}:{AUTH_SERVICE_PORT}/validate',  # Your auth service endpoint
+        f'{AUTH_BASE_URL}/validate',
         json = {'token': token}
     )
         
     if response.status_code == 200:
         data = response.json()
-        return data.get('username')  # Return username from token
-    else:
-        return None
+        return data.get('username') # Return username from token
+    return None

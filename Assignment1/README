@@ -23,35 +23,35 @@ Follow these steps from the project root directory:
     ```
 
 ## Running the Application
-### Terminal 1
-1. **Activate enviornment**
+
+### Terminal 1: Authentication Service
+1. **Activate environment**
     ```bash
-    # Mac/Linux
     source venv/bin/activate
-    
-    # Windows
-    .\venv\Scripts\activate
     ```
-2. **Start flask server**
+2. **Start Auth server**
     ```bash
-    flask --app src/app.py run --debug
+    PYTHONPATH=src python src/Auth/app.py
     ```
 
-### Terminal 2
-1. **Activate enviornment**
+### Terminal 2: URL Shortener Service
+1. **Activate environment**
     ```bash
-    # Mac/Linux
     source venv/bin/activate
-    
-    # Windows
-    .\venv\Scripts\activate
     ```
-2. **Run tests**
+2. **Start Shortener server**
     ```bash
-    (cd test && python3 -s test_1_marking_mk2.py)
+    PYTHONPATH=src python src/Shortener/app.py
     ```
 
-### Testing with postman
-1. Open postman
-2. Import the collection from ``postman/collection.json``
-3. Run the HTML requests
+### Terminal 3: Testing
+1. **Run tests**
+    ```bash
+    cd tests
+    python3 test.py
+    ```
+
+### Testing with Postman
+1. Open Postman
+2. Import the collection from `postman/globals/workspace.postman_globals.json`
+3. Use Port 5001 for Auth requests and Port 5000 for Shortener requests

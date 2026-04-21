@@ -1,11 +1,14 @@
 from users import User
+import os
 from utils import createToken, validateToken
 from flask import Flask, request, jsonify
-import sys
-sys.path.append('..')
 from config import AUTH_SERVICE_PORT
+from pathlib import Path
 
-app = Flask(__name__)
+INSTANCE_PATH = str((Path(__file__).resolve().parent / "instance").resolve())
+BIND_HOST = os.environ.get("BIND_HOST", "0.0.0.0")
+
+app = Flask(__name__, instance_path=INSTANCE_PATH)
 
 @app.post("/users")
 def createUser():
@@ -28,6 +31,7 @@ def updatePwd():
 
     if name in User.users and User.users[name] == oldPwd:
         User.users[name] = newPwd
+        User.updateDatabase()
         return jsonify("Updated"), 200
     
     return jsonify("forbidden"), 403
@@ -49,10 +53,13 @@ def validate():
     token = data.get('token')
 
     username = validateToken(token)
+    print(username)
     if username is None or username not in User.users:
         return jsonify("forbidden"), 403
     else:
         return jsonify({'username': username}), 200
+    
+User.loadData(app)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=AUTH_SERVICE_PORT)
+    app.run(host=BIND_HOST, port=AUTH_SERVICE_PORT)

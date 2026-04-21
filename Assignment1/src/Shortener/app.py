@@ -1,11 +1,14 @@
 from url import Url
+import os
 from utils import *
 from flask import Flask, request, jsonify
-import sys
-sys.path.append('..')
 from config import URL_SHORTENER_PORT
+from pathlib import Path
 
-app = Flask(__name__)
+INSTANCE_PATH = str((Path(__file__).resolve().parent / "instance").resolve())
+BIND_HOST = os.environ.get("BIND_HOST", "0.0.0.0")
+
+app = Flask(__name__, instance_path=INSTANCE_PATH)
 
 # GET / - Returns a list of all existing keys
 @app.get("/")
@@ -75,6 +78,7 @@ def update(id):
         return jsonify("Error"), 400
 
     Url.urls[id]['url'] = url
+    Url.updateDatabase()
     return "", 200
 
 # DELETE /:id - Removes a specific URL
@@ -88,6 +92,7 @@ def deleteUrl(id):
 
     if id in Url.urls and Url.urls[id]['owner'] == username:
         del Url.urls[id]
+        Url.updateDatabase()
         return "", 204
     else:
         return jsonify("Not found"), 404
@@ -104,5 +109,7 @@ def deleteNull():
     Url.deleteAllUrls(username)
     return jsonify("Not Found"), 404
 
+Url.loadData(app)
+
 if __name__ == '__main__':
-    app.run(debug=True, port=URL_SHORTENER_PORT)
+    app.run(host=BIND_HOST, port=URL_SHORTENER_PORT)
